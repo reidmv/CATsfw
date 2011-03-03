@@ -99,6 +99,7 @@ main ()
 #=============================================================================
 setup ()
 {
+	umask 0022
 	# Extract the source package
 	cd "${STARTDIR}"
 	echo "Unzipping package source..."

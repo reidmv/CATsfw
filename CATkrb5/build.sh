@@ -132,6 +132,7 @@ setup ()
 #=============================================================================
 configure ()
 {
+	umask 0022
 	echo "Configuring Package..."
 
 	cd ${SRCDIR} || exit 1

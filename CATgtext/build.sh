@@ -73,6 +73,7 @@ setup ()
 {
 	cd "${STARTDIR}"
 
+	umask 0022
 	echo "Unzipping package source..."
 	if [ -d ${SRCDIR} ] ; then
 	 rm -rf ${SRCDIR} && gtar xzf ${PKGSRC} || exit 1

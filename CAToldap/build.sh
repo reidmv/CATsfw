@@ -81,6 +81,7 @@ main ()
 #=============================================================================
 setup ()
 {
+	umask 0022
 	cd "${STARTDIR}"
 
 	echo "Unzipping package source..."
@@ -104,7 +105,6 @@ setup ()
 #=============================================================================
 configure ()
 {
-	umask 0022
 	echo "Running configure script..."
 	./configure \
 		--prefix="${PREFIX}" \

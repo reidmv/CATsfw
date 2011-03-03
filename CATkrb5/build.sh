@@ -97,6 +97,7 @@ main ()
 #=============================================================================
 setup ()
 {
+	umask 0022
 	# Extract the source package
 	cd "${STARTDIR}"
 	echo "Unzipping package source..."
@@ -132,7 +133,6 @@ setup ()
 #=============================================================================
 configure ()
 {
-	umask 0022
 	echo "Configuring Package..."
 
 	cd ${SRCDIR} || exit 1
@@ -157,7 +157,7 @@ compile ()
 	cd ${SRCDIR} || exit 1
 
 	echo "Compiling package..."
-	/opt/csw/bin/gmake DESTDIR="${STAGINGDIR}" || exit 1
+	/opt/csw/bin/gmake -j 17 DESTDIR="${STAGINGDIR}" || exit 1
 }
 
 #=== FUNCTION ================================================================
@@ -168,7 +168,7 @@ package ()
 {
 	echo "Building package..."
 	cd ${SRCDIR} || exit 1
-	/opt/csw/bin/gmake -j 9 || exit 1
+	/opt/csw/bin/gmake -j 17 || exit 1
 
 	echo "Installing (fake) to ${STAGINGDIR}..."
 	/opt/csw/bin/gmake DESTDIR="${STAGINGDIR}" install || exit 1

@@ -72,7 +72,7 @@ if [ $? -ne 0 ] ; then
 fi
 
 echo "Building package..."
-/opt/csw/bin/gmake -j 65 || exit 1
+/opt/csw/bin/gmake -j 17 || exit 1
 
 if [ -d ${STAGINGDIR} ] ; then
   rm -rf "${STAGINGDIR}" && \

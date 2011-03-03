@@ -1,0 +1,28 @@
+#  This file is part of CATsfw.
+#
+#  CATsfw is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  CATsfw is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with CATsfw.  If not, see <http://www.gnu.org/licenses/>.
+
+*.swp
+*.gz
+CAT*/pkg/*
+
+# Specific package build directories to ignore
+/CATbdb/db-5.1.25/*
+/CATgtext/gettext-0.18/*
+/CATiconv/libiconv-1.13.1/*
+/CATkrb5/krb5-1.9/*
+/CAToldap/openldap-2.4.24/*
+/CATossl/openssl-1.0.0d/*
+/CATsamba/samba-3.5.7/*
+/CATsasl/cyrus-sasl-2.1.23/*

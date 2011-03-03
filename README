@@ -1,0 +1,34 @@
+#  This file is part of CATsfw.
+#
+#  CATsfw is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  CATsfw is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with CATsfw.  If not, see <http://www.gnu.org/licenses/>.
+
+This is a collection of hackjob scripts which theCAT used to compile and
+package samaba + dependencies on Solaris 10. If we start having to do this
+on a regular basis (compile and build packages for Solaris) we may like, 
+make it not a hackjob or something. Until then, it's still useful to us even
+if only for samba and only for our particular environment. So here it is in
+a repo. :)
+
+The way it works right now is:
+
+ 1. `cd` into the relevant package directory (e.g. CATsamba). 
+ 2. Run the local "build.sh" script.
+ 3. Screw with the "build.sh" script until it works.
+ 4. (Optional) If you did something to make it better, pat yourself on the
+    back! Way to be! Commit the betterments.
+ 5. Find .pkg.gz file in the pkg/ subdirectory. Upload it to your repo or
+    whatever you use to distribute packages to your solaris boxen.
+ 6. Profit!
+
+.: marut

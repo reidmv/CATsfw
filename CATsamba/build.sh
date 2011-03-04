@@ -153,7 +153,7 @@ compile ()
 {
 	echo "Compiling package..."
 	cd ${SRCDIR} || exit 1
-	/opt/csw/bin/gmake -j 17 DESTDIR="${STAGINGDIR}" || exit 1
+	/opt/csw/bin/gmake -j 17 || exit 1
 }
 
 #=== FUNCTION ================================================================
@@ -164,11 +164,9 @@ package ()
 {
 	echo "Building package..."
 	cd ${SRCDIR} || exit 1
-	/opt/csw/bin/gmake -j 17 || exit 1
-
 	echo "Installing (fake) to ${STAGINGDIR}..."
-#	/opt/csw/bin/gmake DESTDIR="${STAGINGDIR}" install || exit 1
-#	mv ${STAGINGDIR}/${PREFIX}/* ${STAGINGDIR} && rmdir ${STAGINGDIR}/${PREFIX}
+	/opt/csw/bin/gmake DESTDIR="${STAGINGDIR}" install || exit 1
+	mv ${STAGINGDIR}/${PREFIX}/* ${STAGINGDIR} && rmdir ${STAGINGDIR}/${PREFIX}
 
 	echo "Calculating prototype..."
 

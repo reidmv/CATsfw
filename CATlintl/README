@@ -1,0 +1,13 @@
+This package is effectively sunfreeware SMClintl relocated to /opt/sfw.
+
+You can build it yourself by more or less
+
+wget SMClintl.pkg.gz
+pkgtrans SMClintl.pkg.gz ./
+cd SMClintl
+edit pkginfo with a new location, pkgmap with new size & checksum
+pkgtrans SMClintl SMClintl-blah.pkg
+gzip SMClintl-blah.pkg
+
+I wasn't motivated enough to track down the source and build. It seems like
+libintl was part of GNU gettext?

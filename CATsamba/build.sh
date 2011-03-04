@@ -90,7 +90,7 @@ configure ()
 file_depend ()
 {
 	cat <<-EOF
-		P CATintl
+		P CATlintl
 		P CATkrb5
 		P CSWoldap
 		P CSWsasl

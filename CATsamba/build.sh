@@ -28,7 +28,6 @@ SRCDIR="${STARTDIR}/samba-${PKGVERS}/source3"
 STAGINGDIR="${PKGDIR}/staging"
 PKGBLDDIR="${PKGDIR}/build"
 
-
 OPENLDAPVERS='2.2.26'
 
 AR=/opt/csw/bin/gar
@@ -63,9 +62,9 @@ configure ()
 		--prefix="${PREFIX}" \
 		--sysconfdir=${PREFIX}/etc \
 		--with-configdir=${PREFIX}/etc/samba \
-		--with-logfilebase=${PREFIX}/var/samba \
-		--with-lockdir=${PREFIX}/var/samba/locks \
-		--with-piddir=${PREFIX}/var/run/samba \
+		--with-logfilebase=/var/samba \
+		--with-lockdir=/var/samba/locks \
+		--with-piddir=/var/samba/locks \
 		--with-privatedir=${PREFIX}/etc/samba/private \
 		--with-winbind \
 		--with-acl-support \
@@ -77,6 +76,7 @@ configure ()
 		--with-shared-modules=vfs_zfsac,modules=idamap_ldap,idmap_rid,idmap_ad,idmap_adex,idmap_hash,idmap_tdb2 \
 		--enable-shared-libs=yes \
 		--enable-shared=yes \
+		--disable-swat \
 		--disable-external-libtalloc \
 		--disable-external-libtdb
 
@@ -166,25 +166,23 @@ package ()
 	cd ${SRCDIR} || exit 1
 	echo "Installing (fake) to ${STAGINGDIR}..."
 	/opt/csw/bin/gmake DESTDIR="${STAGINGDIR}" install || exit 1
-	mv ${STAGINGDIR}/${PREFIX}/* ${STAGINGDIR} && rmdir ${STAGINGDIR}/${PREFIX}
-
 	echo "Calculating prototype..."
 
 	cd "${PKGDIR}"
 
-	mkdir -p ${STAGINGDIR}/var/svc/manifest/network
-	mkdir -p ${STAGINGDIR}/var/run/samba
-	touch ${STAGINGDIR}/var/run/samba/nmbd.pid
-	touch ${STAGINGDIR}/var/run/samba/smbd.pid
-  
-  file_smbd_manifest > ${STAGINGDIR}/var/svc/manifest/network/samba.xml
-  file_nmbd_manifest > ${STAGINGDIR}/var/svc/manifest/network/wins.xml
-  file_pkginfo     > ${PKGDIR}/pkginfo
-  file_space       > ${PKGDIR}/space
-  file_depend      > ${PKGDIR}/depend
-  file_prototype   > ${PKGDIR}/prototype
-  file_postinstall > ${PKGDIR}/postinstall
-  file_preremove   > ${PKGDIR}/preremove
+	mkdir -p ${STAGINGDIR}/var/samba/locks
+	touch ${STAGINGDIR}/var/samba/locks/nmbd.pid
+	touch ${STAGINGDIR}/var/samba/locks/smbd.pid
+
+	mkdir -p ${STAGINGDIR}/${PREFIX}/var/svc/manifest/network
+	file_smbd_manifest > ${STAGINGDIR}/${PREFIX}/var/svc/manifest/network/samba.xml
+	file_nmbd_manifest > ${STAGINGDIR}/${PREFIX}/var/svc/manifest/network/wins.xml
+	file_pkginfo     > ${PKGDIR}/pkginfo
+	file_space       > ${PKGDIR}/space
+	file_depend      > ${PKGDIR}/depend
+	file_prototype   > ${PKGDIR}/prototype
+	file_postinstall > ${PKGDIR}/postinstall
+	file_preremove   > ${PKGDIR}/preremove
 
 	PKGNAME="${PKGDIR}/${PKGNAME}-${PKGVERS}-`uname -s``uname -r`-`uname -p`-CAT.pkg"
 
@@ -285,7 +283,8 @@ file_prototype ()
 	echo "i depend"
 	(
 		cd ${STAGINGDIR};
-		pkgproto "${STAGINGDIR}=${PREFIX}" > $TEMP
+		pkgproto "${STAGINGDIR}/${PREFIX}=${PREFIX}" > $TEMP
+		pkgproto "${STAGINGDIR}/var/samba=/var/samba" >> $TEMP
                 sed  "s/${USER} ${GROUP}/root bin/" $TEMP
 	)
 	rm $TEMP
@@ -325,7 +324,7 @@ file_smbd_manifest ()
 		        </method_environment>
 		      </method_context>
 		    </exec_method>
-		    <exec_method type='method' name='stop' exec='/usr/bin/kill \`cat ${PREFIX}/var/run/samba/smbd.pid\`' timeout_seconds='60' />
+		    <exec_method type='method' name='stop' exec='/usr/bin/kill \`cat /var/samba/locks/smbd.pid\`' timeout_seconds='60' />
 		  </instance>
 		  <stability value='Unstable' />
 		  <template>
@@ -380,7 +379,7 @@ file_nmbd_manifest ()
 		        </method_environment>
 		      </method_context>
 		    </exec_method>
-		    <exec_method type='method' name='stop' exec='/usr/bin/kill \`cat ${PREFIX}/var/run/samba/nmbd.pid\`' timeout_seconds='60' />
+		    <exec_method type='method' name='stop' exec='/usr/bin/kill \`cat /var/samba/locks/nmbd.pid\`' timeout_seconds='60' />
 		  </instance>
 		  <stability value='Unstable' />
 		  <template>

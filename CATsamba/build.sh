@@ -35,7 +35,7 @@ AR=/opt/csw/bin/gar
 CC=/opt/csw/gcc4/bin/gcc
 LD=/opt/csw/gcc4/bin/ld
 PATH='/bin:/sbin:/opt/sfw/bin:/opt/csw/bin:/opt/csw/gcc4/bin'
-LDFLAGS="-L/opt/sfw/lib -L/opt/csw/lib -L/usr/lib -L/lib -R/opt/sfw/lib -R/opt/csw/lib -R/usr/lib -R/lib -lsasl2 -lintl -lgss"
+LDFLAGS="-L/opt/sfw/lib -L/opt/csw/lib -L/usr/lib -L/lib -L/opt/csw/gcc4/lib -R/opt/sfw/lib -R/opt/csw/lib -R/usr/lib -R/lib -R/opt/csw/gcc4/lib -lsasl2 -lintl -lgss"
 CFLAGS="-I/opt/sfw/include -I/opt/csw/include -I/usr/include"
 CPPFLAGS="$CFLAGS"
 CXXFLAGS="$CFLAGS"
@@ -173,14 +173,18 @@ package ()
 	cd "${PKGDIR}"
 
 	mkdir -p ${STAGINGDIR}/var/svc/manifest/network
-        file_smbd_manifest > ${STAGINGDIR}/var/svc/manifest/network/samba.xml
-        file_nmbd_manifest > ${STAGINGDIR}/var/svc/manifest/network/wins.xml
-	file_pkginfo     > ${PKGDIR}/pkginfo
-	file_space       > ${PKGDIR}/space
-	file_depend      > ${PKGDIR}/depend
-	file_prototype   > ${PKGDIR}/prototype
-        file_postinstall > ${PKGDIR}/postinstall
-        file_preremove   > ${PKGDIR}/preremove
+	mkdir -p ${STAGINGDIR}/var/run/samba
+	touch ${STAGINGDIR}/var/run/samba/nmbd.pid
+	touch ${STAGINGDIR}/var/run/samba/smbd.pid
+  
+  file_smbd_manifest > ${STAGINGDIR}/var/svc/manifest/network/samba.xml
+  file_nmbd_manifest > ${STAGINGDIR}/var/svc/manifest/network/wins.xml
+  file_pkginfo     > ${PKGDIR}/pkginfo
+  file_space       > ${PKGDIR}/space
+  file_depend      > ${PKGDIR}/depend
+  file_prototype   > ${PKGDIR}/prototype
+  file_postinstall > ${PKGDIR}/postinstall
+  file_preremove   > ${PKGDIR}/preremove
 
 	PKGNAME="${PKGDIR}/${PKGNAME}-${PKGVERS}-`uname -s``uname -r`-`uname -p`-CAT.pkg"
 
@@ -321,7 +325,7 @@ file_smbd_manifest ()
 		        </method_environment>
 		      </method_context>
 		    </exec_method>
-		    <exec_method type='method' name='stop' exec='/usr/bin/kill \`cat ${PREFIX}/var/samba/locks/smbd.pid\`' timeout_seconds='60' />
+		    <exec_method type='method' name='stop' exec='/usr/bin/kill \`cat ${PREFIX}/var/run/samba/smbd.pid\`' timeout_seconds='60' />
 		  </instance>
 		  <stability value='Unstable' />
 		  <template>
@@ -376,7 +380,7 @@ file_nmbd_manifest ()
 		        </method_environment>
 		      </method_context>
 		    </exec_method>
-		    <exec_method type='method' name='stop' exec='/usr/bin/kill \`cat ${PREFIX}/var/samba/locks/nmbd.pid\`' timeout_seconds='60' />
+		    <exec_method type='method' name='stop' exec='/usr/bin/kill \`cat ${PREFIX}/var/run/samba/nmbd.pid\`' timeout_seconds='60' />
 		  </instance>
 		  <stability value='Unstable' />
 		  <template>

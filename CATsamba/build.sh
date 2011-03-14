@@ -73,7 +73,7 @@ configure ()
 		--with-krb5=/opt/sfw \
 		--with-syslog \
 		--with-utmp \
-		--with-shared-modules=vfs_zfsac,modules=idamap_ldap,idmap_rid,idmap_ad,idmap_adex,idmap_hash,idmap_tdb2 \
+		--with-shared-modules=vfs_zfsacl,idmap_ldap,idmap_rid,idmap_ad,idmap_adex,idmap_hash,idmap_tdb2 \
 		--enable-shared-libs=yes \
 		--enable-shared=yes \
 		--disable-swat \

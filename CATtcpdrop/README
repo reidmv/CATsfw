@@ -1,0 +1,15 @@
+This is a very quick and dirty port of the tcpdrop utility from OpenBSD
+and FreeBSD to Solaris.  Tested on Solaris 9 and 10.
+
+On Solaris 10, this utility requires the sys_ip_config privilege.
+Since this privilege cannot be asserted in a local zone, it is not
+possible to use this utility in a local zone.
+
+Thanks to Casper Dik for pointing out the TCP_IOC_ABORT_CONN ioctl.
+
+http://cvs.opensolaris.org/source/xref/on/usr/src/cmd/zoneadmd/vplat.c
+provided all the documentation on its use, and so certain portions of
+this file are covered by the CDDL included in the tar file.
+
+The original work is covered by a BSD license.
+
